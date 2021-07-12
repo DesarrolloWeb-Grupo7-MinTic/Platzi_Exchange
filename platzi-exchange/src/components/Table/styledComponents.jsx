@@ -10,9 +10,10 @@ export const TableWrapper = styled.div`
 
 export const TableContentWrapper = styled.div`
     display: grid;
-    width: 80%;
-    grid-template-columns: 5% 10% 10% 10% 20% 20% 25% ;
+    width: 70%;
+    grid-template-columns: 5% 10% 10% 15% 20% 15% 15% ;
     justify-items: center;
+    align-items: center;
     p{
         font-weight: 700;
         font-size: 14px;

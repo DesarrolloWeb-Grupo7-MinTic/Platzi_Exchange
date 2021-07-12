@@ -1,0 +1,32 @@
+.logo_moneda {
+  width: 30px;
+  height: 30px;
+  object-fit: fill;
+  margin: 15px 0;
+}
+
+.p_tableRow {
+  margin: 15px 0;
+}
+.button {
+  height: 30px;
+  background-color: white;
+  color: #2f855a;
+  border: 1px solid #2f855a;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  color: white;
+  background-color: #2f855a;
+  cursor: pointer;
+}
+
+.green{
+    color: #2f855a;
+}
+
+.red{
+    color: red;
+}

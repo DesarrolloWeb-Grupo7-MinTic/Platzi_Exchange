@@ -1,0 +1,11 @@
+.input_buscar{
+    border: none;
+    border-bottom: 1px solid grey;
+    width: 80%;
+}
+
+.input_buscar:focus-visible {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid grey;
+}

@@ -1,38 +1,54 @@
 import React, { useEffect, useRef, useState } from "react";
 import Service from "../../services/services";
+import TableDataRow from "../TableDataRow";
+import TableTitle from "../TableTitle";
 import { TableContentWrapper, TableWrapper } from "./styledComponents";
 
 function Table() {
-  const [dataApi, setDataApi] = useState()
+  const [dataApi, setDataApi] = useState();
+  const [value, setValue] = useState("");
+  const [coinArr, setCoinArr] = useState([])
 
   useEffect(() => {
     Service.getCoinList().then((data) => {
       console.log(data);
-      setDataApi(data)
+      setDataApi(data);
+      setCoinArr(data);
     });
   }, []);
+
+  const onChange = (newValue) => {
+    setValue(newValue);
+  };
+
+  useEffect(() => {
+    dataApi && setCoinArr(dataApi.filter( coin => coin.id.includes(value))                 )
+    console.log(coinArr);
+  }, [value])
+
+
+  console.log(value);
 
   return (
     <TableWrapper>
       <TableContentWrapper>
-        <p></p>
-        <p>Ranking</p>
-        <p>Nombre</p>
-        <p>Precio</p>
-        <p>Cap. de Mercado</p>
-        <p>Variacion 24hs</p>
-        <p>Buscar...</p>
-        {dataApi &&
-          dataApi.coins.map((coin) => {
-            return( <>
-              <img src={coin.item.small} alt='coin'></img>
-              <p>{coin.item.coin_id}</p>
-              <p>{coin.item.id}</p>
-              <p>{(coin.item.price_btc*33940.70).toFixed(2)} USD</p>
-              <p>{coin.item.market_cap_rank}</p>
-              <p>Variacion 24hs</p>
-              <button>Detalle</button>
-            </>);
+        <TableTitle onChange={onChange} value={value} />
+        {coinArr &&
+          coinArr.map((coin, i) => {
+            return (
+              <>
+                <TableDataRow
+                  image={coin.image}
+                  i={i + 1}
+                  id={coin.id}
+                  current_price={coin.current_price}
+                  market_cap={coin.market_cap}
+                  price_change_percentage_24h={coin.price_change_percentage_24h.toFixed(
+                    2
+                  )}
+                />
+              </>
+            );
           })}
       </TableContentWrapper>
     </TableWrapper>
