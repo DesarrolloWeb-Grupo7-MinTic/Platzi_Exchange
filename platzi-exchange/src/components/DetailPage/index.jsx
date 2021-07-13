@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Service from "../../services/services";
 import Header from "../Header";
 import InfoTable from "../InfoTable";
+import moment from "moment";
 import { Line } from "react-chartjs-2";
 import {
   CoinWrapper,
@@ -11,28 +12,31 @@ import {
   InfoWrapper,
   ButtonsWrapper,
   GraphDiv,
-  DetailPageWrapper
+  DetailPageWrapper,
 } from "./styledComponents";
 
 function DetailPage() {
   const { id } = useParams();
-  const dataApi = useRef([{}]);
+  const dataApi = useRef({});
+  const dataChart = useRef();
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState();
-
+  const [btnControl, setBtnControl] = useState(true);
+  const actualTime = +new Date();
+  const oneMonthAgo = moment().subtract(1, "months").unix();
+  const labels = useRef([]);
   const data = {
-    labels: ["1", "2", "3", "4", "5", "6"],
+    labels: labels.current,
     datasets: [
       {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
+        label: dataApi.current.name,
+        data: dataChart.current,
         fill: false,
-        backgroundColor: "rgb(255, 99, 132)",
-        borderColor: "rgba(255, 99, 132, 0.2)",
+        backgroundColor: "#68D391",
+        borderColor: "#68d391c6",
       },
     ],
   };
-
   const options = {
     scales: {
       yAxes: [
@@ -46,8 +50,20 @@ function DetailPage() {
   };
 
   useEffect(() => {
-    Service.getCoin(id).then((data) => {
-      dataApi.current = data;
+    Promise.all([
+      Service.getCoin(id),
+      Service.getCoinHistory(id, "usd", oneMonthAgo, actualTime),
+    ]).then((data) => {
+      dataApi.current = data[0];
+
+      labels.current = data[1].prices.map((priceArr) => {
+        let temp = new Date(priceArr[0]);
+        return temp.toLocaleString().split(",")[0];
+      });
+      dataChart.current = data[1].prices.map((priceArr) => {
+        return priceArr[1];
+      });
+      console.log(labels.current);
       setLoading((prevState) => !prevState);
     });
   }, []);
@@ -56,7 +72,9 @@ function DetailPage() {
     setValue(e.target.value);
   };
 
-  console.log(dataApi.current);
+  const onClickBtn = () => {
+    setBtnControl((prevState) => !prevState);
+  };
 
   return (
     <DetailPageWrapper>
@@ -69,13 +87,17 @@ function DetailPage() {
             <CoinWrapper>
               <img src={dataApi.current.image.large} alt={id} />
               <NameSymbolWrapper>
-                <p>{dataApi.current.name}</p>
-                <p>{dataApi.current.symbol}</p>
+                <p className='nameSymbolWrapper__name'>
+                  {dataApi.current.name}
+                </p>
+                <p className='nameSymbolWrapper__symbol'>
+                  {dataApi.current.symbol}
+                </p>
               </NameSymbolWrapper>
             </CoinWrapper>
             <InfoWrapper>
               <InfoTable
-                ranking={dataApi.current.ranking}
+                ranking={dataApi.current.coingecko_rank}
                 current_price={dataApi.current.market_data.current_price.usd}
                 low_price={dataApi.current.market_data.low_24h.usd}
                 high_price={dataApi.current.market_data.high_24h.usd}
@@ -85,16 +107,31 @@ function DetailPage() {
               />
             </InfoWrapper>
             <ButtonsWrapper>
-              <button>{dataApi.current.symbol.toUpperCase()} a USD</button>
+              <button onClick={onClickBtn}>
+                {btnControl
+                  ? `${dataApi.current.symbol.toUpperCase()} a USD`
+                  : `USD a ${dataApi.current.symbol.toUpperCase()}`}
+              </button>
               <input
                 type='number'
-                placeholder='Valor en USD'
+                placeholder={
+                  btnControl
+                    ? `Valor en ${dataApi.current.symbol.toUpperCase()}`
+                    : `Valor en USD`
+                }
                 onChange={onChange}
+                className='ButtonsWrapper__input_buscar'
               />
-              <p>
-                {value
-                  ? value * dataApi.current.market_data.current_price.usd
-                  : 0}
+              <p className='ButtonsWrapper__p'>
+                {!btnControl
+                  ? value &&
+                    `${(
+                      value / dataApi.current.market_data.current_price.usd 
+                    ).toFixed(5)} ${dataApi.current.symbol.toUpperCase()}`
+                  : value &&
+                    `${(
+                      value * dataApi.current.market_data.current_price.usd
+                    ).toFixed(2)} USD`}
               </p>
             </ButtonsWrapper>
           </TopSectionWrapper>
@@ -103,8 +140,6 @@ function DetailPage() {
           </GraphDiv>
         </>
       )}
-
-      <h1>{id}</h1>
     </DetailPageWrapper>
   );
 }

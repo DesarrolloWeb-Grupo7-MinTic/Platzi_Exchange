@@ -1,12 +1,17 @@
 import React from "react";
 import { HeaderWrapper } from "./styledComponents";
 import logoSrc from "../../assets/media/logo.png";
+import { Link, useHistory } from "react-router-dom";
+
 
 function Header() {
+  const history = useHistory()
   return (
     <HeaderWrapper>
-      <img src={logoSrc} alt='logo Platzi Exchange' />
-      <h1>PlatziExchange</h1>
+      <Link to="/home">
+        <img className='img_logo'  src={logoSrc} alt='logo Platzi Exchange' />
+      </Link>
+      <h1 onClick={()=> { history.push('/home')}}>PlatziExchange</h1>
       <h3>BTC</h3>
       <h3>ETH</h3>
       <h3>XRP</h3>

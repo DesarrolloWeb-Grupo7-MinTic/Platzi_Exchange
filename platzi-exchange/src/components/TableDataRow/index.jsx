@@ -24,9 +24,6 @@ function TableDataRow({image, i, id,current_price,market_cap, price_change_perce
       history.push(`/coin/${id}`)
   }
   
-
-
-
     return (
         <>
             <img className='logo_moneda'   src={image} alt='coin'></img>

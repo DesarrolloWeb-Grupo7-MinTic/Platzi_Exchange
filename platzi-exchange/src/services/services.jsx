@@ -18,9 +18,22 @@ export default class Service {
 
   static async getCoin(id) {
     const data = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/${id}`)
+      `https://api.coingecko.com/api/v3/coins/${id}`
+    );
     return data.data;
   }
 
-
+  static async getCoinHistory(id, vs_currency, from, to) {
+    const data = await axios.get(
+      `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range`,
+      {
+        params: {
+          vs_currency: vs_currency,
+          from: from,
+          to: to,
+        },
+      }
+    );
+    return data.data;
+  }
 }

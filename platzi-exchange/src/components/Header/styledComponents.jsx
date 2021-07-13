@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export const HeaderWrapper = styled.div`
-
- 
  width: 100%;
   height: 60px;
   background: #68d391;
@@ -11,12 +9,12 @@ export const HeaderWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   color: #fff;
-  & img {
-    height: 85%;
+  & .img_logo {
+    height: 40px;
     width: auto;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 30px;
   }
-  & a {
+  & a:last-child {
     margin: 10px 10px;
     margin-left: auto;
     text-decoration: none;
