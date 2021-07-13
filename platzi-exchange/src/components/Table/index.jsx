@@ -8,6 +8,7 @@ function Table() {
   const [dataApi, setDataApi] = useState();
   const [value, setValue] = useState("");
   const [coinArr, setCoinArr] = useState([])
+  
 
   useEffect(() => {
     Service.getCoinList().then((data) => {

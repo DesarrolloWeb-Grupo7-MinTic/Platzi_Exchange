@@ -15,4 +15,12 @@ export default class Service {
     );
     return data.data;
   }
+
+  static async getCoin(id) {
+    const data = await axios.get(
+      `https://api.coingecko.com/api/v3/coins/${id}`)
+    return data.data;
+  }
+
+
 }

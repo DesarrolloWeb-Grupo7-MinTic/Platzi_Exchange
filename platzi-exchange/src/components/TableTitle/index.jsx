@@ -10,7 +10,7 @@ function TableTitle({ onChange, value }) {
   
   return (
     <>
-      <p></p>
+      <span></span>
       <p>Ranking</p>
       <p>Nombre</p>
       <p>Precio</p>

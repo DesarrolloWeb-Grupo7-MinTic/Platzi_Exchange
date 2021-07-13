@@ -1,5 +1,7 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import './style.css';
+
 
 export function formatNumber(value) {
     var units = ["k", "m", "mM", "b", "P", "E", "Z", "Y"],
@@ -17,6 +19,14 @@ export function formatNumber(value) {
   }
 
 function TableDataRow({image, i, id,current_price,market_cap, price_change_percentage_24h }) {
+  const history = useHistory();
+  const onClick = ()=>{
+      history.push(`/coin/${id}`)
+  }
+  
+
+
+
     return (
         <>
             <img className='logo_moneda'   src={image} alt='coin'></img>
@@ -25,7 +35,7 @@ function TableDataRow({image, i, id,current_price,market_cap, price_change_perce
             <p className='p_tableRow'>$ { current_price } USD</p>
             <p className='p_tableRow'>$ { formatNumber(market_cap)}</p>
             <p className={ price_change_percentage_24h > 0 ? 'p_tableRow green' : 'p_tableRow red' }>{price_change_percentage_24h}%</p>
-            <button className='button'>Detalle</button>  
+            <button className='button' onClick={onClick}>Detalle</button>  
         </>
     )
 }
