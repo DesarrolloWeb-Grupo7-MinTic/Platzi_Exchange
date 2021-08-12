@@ -16,11 +16,11 @@ function Header() {
       <h3>ETH</h3>
       <h3>XRP</h3>
       <a
-        href='https://github.com/DesarrolloWeb-Grupo7-MinTic/Platzi_Exchange_MarioGomez'
+        href='https://github.com/DesarrolloWeb-Grupo7-MinTic/Platzi_Exchange'
         target='_blank'
         rel='noreferrer'
       >
-        <span>By @mariogomez96</span>
+        <span>By @mariogomez96 | @alejandra-rey</span>
       </a>
     </HeaderWrapper>
   );
